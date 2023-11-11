@@ -1,22 +1,35 @@
 import { useState, useEffect } from "react";
+import {getCurrentWeatherData} from "../mixins/weatherFetch.tsx";
 
 export default function MainWeatherData() {
 
     const [ data, setData ] = useState({})
+    const [ isLoading, setLoading ] = useState(true)
 
-    useEffect(()=> {
-        fetch("https://api.openweathermap.org/data/2.5/weather?lat=39.4078888&lon=-0.4439118&appid=9014bc217533668d1681d0858a1ca241")
-            .then(r => r.json())
-            .then(json => {
-                setData(Object.assign(data, json))
-                console.log("DATA: ", data)
-            })
+    useEffect(() => {
+        getCurrentWeatherData().then(data => {
+            setData(data)
+            setLoading((prevState)=> !prevState)
+            console.log(data)
+        })
     }, [])
 
     return (
-        <section>
-            <h1>Main data</h1>
-            { data.dt && <p>{ new Date(data.dt).getDate() }</p> }
-        </section>
+        <>
+            { isLoading
+                ? <p>Loading...</p>
+                : (
+                    <section>
+                        <h1>Main data</h1>
+                        <p>Temp: { data.main.temp.toFixed(0) }º</p>
+                        <p>Max: { data.main.temp_max.toFixed(0) }º</p>
+                        <p>Min: { data.main.temp_min.toFixed(0) }º</p>
+                        <p>Description: { data.weather[0].description.charAt(0).toUpperCase().concat(data.weather[0].description.slice(1)) }</p>
+                        <p>Time: { `${new Date( new Date(data.dt * 1000) ).getHours()}:${(new Date( new Date(data.dt * 1000) ).getMinutes()).toString().padStart( 2, '0')}` }</p>
+                        <p>Name: { data.name }</p>
+                    </section>
+                )
+            }
+        </>
     )
 }
