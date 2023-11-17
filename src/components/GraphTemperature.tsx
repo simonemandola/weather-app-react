@@ -1,41 +1,41 @@
 import {useEffect, useState} from "react";
-import { Chart } from 'primereact/chart';
-import {getOneCallWeatherData} from "../mixins/weatherFetch.tsx";
+import {Chart} from 'primereact/chart';
+import {useSelector} from "react-redux";
+import {formatTimeHour} from "../mixins/mixins.tsx";
 
 export default function GraphTemperature() {
 
-    const [ data, setData ] = useState({})
-    const [ isLoading, setLoading ] = useState(true)
+    const isMobile = useSelector((state) => state.system.value.isMobile)
+    const data = useSelector((state) => state.weatherData.value)
     const [ temperatures, setTemperatures ] = useState([] as string[])
     const [ hourLabels, setHourLabels ] = useState([] as string[])
 
-    const textColor = "#2a2a2a"
-    const textColorSecondary = "#pink"
-    const surfaceBorder = ""
+    const textColor = "#043d75"
+    const textColorSecondary = textColor
+    const surfaceBorder = `${textColor}08`
 
     const dataChar = {
         labels: hourLabels,
         datasets: [
             {
-                label: '',
                 data: temperatures,
                 fill: true,
                 borderColor: textColor,
-                tension: 0.5
+                tension: .5,
             }
         ]
-    };
+    }
 
     const options = {
         maintainAspectRatio: false,
-        aspectRatio: .75,
+        aspectRatio: .8,
         layout: {
-            padding: 10
+            padding: isMobile ? 0 : 10
         },
         plugins: {
             title: {
                 display: true,
-                text: 'Gráfico de temperatura',
+                text: "Gráfico de temperatura",
                 padding: {
                     top: 10,
                     bottom: 30
@@ -43,12 +43,12 @@ export default function GraphTemperature() {
             },
             legend: {
                 display: false
-            }
+            },
         },
         scales: {
             x: {
                 ticks: {
-                    color: textColorSecondary
+                    color: textColorSecondary,
                 },
                 grid: {
                     color: surfaceBorder
@@ -56,33 +56,36 @@ export default function GraphTemperature() {
             },
             y: {
                 ticks: {
-                    color: textColorSecondary
+                    color: textColorSecondary,
                 },
                 grid: {
                     color: surfaceBorder
                 }
             }
         }
-    };
+    }
 
     useEffect(() => {
-        getOneCallWeatherData().then(data => {
-            data.hourly = data.hourly.splice(0, 13)
-            data.hourly.map((hour: number)=> {
-                setHourLabels((value)=> [...value, (new Date(hour.dt * 1000).getHours().toString())])
-                setTemperatures((value)=> [...value, hour.temp])
+        if (data.hourly) {
+
+            // Reset data
+            setHourLabels([])
+            setTemperatures([])
+
+            // Update chart data
+            data.hourly.map((hour: number, index: number): void => {
+                if (index < 13) {
+                    setHourLabels((value: string[])=> [...value, formatTimeHour(hour.dt, data.timezone_offset) as string])
+                    setTemperatures((value)=> [...value, hour.temp])
+                }
             })
-            console.log("TEMP", temperatures)
-            setData(data)
-            setLoading((prevState)=> !prevState)
-        })
+        }
     }, []);
 
     return (
         <>
-            { isLoading
-                ? <></>
-                : <section>
+            { data.hourly &&
+                <section className="bg-blue-100 h-fit p-4 rounded-xl">
                     <Chart type="line" data={dataChar} options={options} />
                 </section>
             }

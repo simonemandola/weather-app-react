@@ -1,38 +1,39 @@
-import {useEffect, useState} from "react";
-import {getOneCallWeatherData} from "../mixins/weatherFetch.tsx";
+import {useSelector} from "react-redux";
+import {formatTimeHour} from "../mixins/mixins.tsx";
+import React from "react";
 
 export default function HourlyWeatherData() {
 
-    const [ data, setData ] = useState({})
-    const [ isLoading, setLoading ] = useState(true)
-    const minPopValue = 0.3
-
-    useEffect(() => {
-        getOneCallWeatherData().then(data => {
-            console.log(data)
-            setData(data)
-            setLoading((prevState)=> !prevState)
-        })
-    }, []);
+    const data = useSelector((state) => state.weatherData.value)
+    const minPopValue = 0.295
 
     return (
         <>
-            { isLoading
-                ? <></>
-                : <section>
-                    <h2>Próximas 24 horas</h2>
-                    <ul style={{ display: 'flex', gap: '1.5rem' }}>
+            { data.hourly
+                && <section className="mt-20 sm:col-span-2">
+                    <h2 className="mb-4">Mañana se prevé { data.daily[1].weather[0].description }</h2>
+                    <ul className="flex gap-x-2 overflow-x-scroll bg-blue-100 p-4 rounded-xl">
                         {data.hourly.slice(0, 25).map(
-                            (weather: object, index: number) =>
-                                <li key={index} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    <p>{ index == 0 ? 'Ahora' : new Date(new Date(weather.dt * 1000)).getHours() }</p>
-                                    <p>{ weather.temp.toFixed(0) }º</p>
-                                    <p>{ weather.pop < minPopValue ? '' : `${weather.pop * 100}%` }</p>
-                                </li>
+                            (weather: object, index: number) => {
+                                return (
+                                    <li key={index} className="flex flex-col items-center justify-between gap-y-2 p-2 box-border bg-gray-100 min-w-[4rem] min-h-[7rem] rounded-xl">
+                                        <p>{ index === 0 ? 'Ahora' : formatTimeHour(weather.dt, data.timezone_offset) }</p>
+                                        <img
+                                            className="w-8"
+                                            src={`src/assets/img/icons/${weather.weather[0].icon}.png`}
+                                            alt={ weather.weather[0].description }
+                                        />
+                                        <p className="text-blue-700 text-xs">
+                                            { weather.pop < minPopValue ? '' : `${Math.round(weather.pop * 100)}%` }
+                                        </p>
+                                        <p>{ index === 0 ? Math.round(data.current.main.temp) : Math.round(weather.temp) }º</p>
+                                    </li>
+                                )
+                            }
                         )}
                     </ul>
             </section>
             }
-        </>
+            </>
     )
 }

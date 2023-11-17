@@ -1,41 +1,47 @@
-import {useEffect, useState} from "react";
-import {getOneCallWeatherData} from "../mixins/weatherFetch.tsx";
+import {useSelector} from "react-redux";
+import {formatTimeHour} from "../mixins/mixins.tsx";
 
 export default function HourlyDetailsData() {
 
-    const [ data, setData ] = useState({})
-    const [ isLoading, setLoading ] = useState(true)
+    const data = useSelector((state) => state.weatherData.value)
 
-    useEffect(() => {
-        getOneCallWeatherData().then(data => {
-            setData(data)
-            setLoading((prevState)=> !prevState)
-        })
-    }, []);
+    const columns = [
+        "Hora",
+        "Temp.",
+        "Lluvia",
+        "Hume.",
+        "UVI",
+        "Vel. viento",
+        "Dir. viento",
+    ]
 
     return (
         <>
-            { isLoading
-                ? <></>
-                : <section>
-                    <h2>Previsión detallada por horas</h2>
-                    <ul>
-                        {data.hourly.slice(0, 25).map(
-                            (weather: object, index: number) =>
-                                <li key={index} style={{ display: 'flex', gap: '1rem' }}>
-                                    <p>{ index == 0 ? 'Ahora' : new Date(new Date(weather.dt * 1000)).getHours() }</p>
-                                    <p>{ weather.temp.toFixed(0) }º</p>
-                                    <p>{ weather.clouds }%</p>
-                                    <p>{ weather.pop * 100 }%</p>
-                                    <p>{ weather.humidity }%</p>
-                                    <p>{ weather.uvi }</p>
-                                    <p>{ weather.wind_speed }</p>
-                                    <p>{ weather.wind_deg }º</p>
-                                </li>
-                        )}
-                    </ul>
-                </section>
+            { data.hourly && <section className="rounded-xl bg-blue-100 p-4 h-fit">
+                <h2 className="mb-4">Previsión detallada por horas</h2>
+                <p className="my-4 pl-4 text-xs font-bold w-full grid grid-cols-7 gap-x-2 items-center justify-between">
+                    { columns.map( (columnName: string, index: number) =>  {
+                        return <span key={index}>{ columnName }</span>
+                    }) }
+                </p>
+                <ul className="[&>li:nth-child(odd)]:bg-gray-100 overflow-scroll h-[18rem]">
+                    {data.hourly.slice(0, 25).map(
+                        (weather: object, index: number) =>
+                            <li key={index} className="text-sm sm:text-base w-full grid grid-cols-7 gap-x-2 items-center justify-between p-3 sm:p-4 box-border rounded-xl">
+                                <p>{ index == 0 ? 'Ahora' : formatTimeHour(weather.dt, data.timezone_offset) }</p>
+                                <p className="text-center">{ Math.round(weather.temp) }º</p>
+                                <p className="text-center">{ Math.round(weather.pop * 100) }%</p>
+                                <p className="text-center">{ weather.humidity }%</p>
+                                <p className="text-center">{ weather.uvi }</p>
+                                <p className="text-center">{ weather.wind_speed.toFixed(1) }<sub className="text-[.65rem] ml-1">m/s</sub></p>
+                                <p className="text-center">
+                                    <i className="pi pi-arrow-up text-xs scale-x-75" style={{ transform: `rotateZ(${weather.wind_deg}deg)` }}></i>
+                                </p>
+                            </li>
+                    )}
+                </ul>
+            </section>
             }
-        </>
+            </>
     )
 }
