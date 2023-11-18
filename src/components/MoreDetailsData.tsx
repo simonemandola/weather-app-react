@@ -63,7 +63,7 @@ export default function MoreDetailsData() {
                             relative
                             before:absolute
                             before:inset-0
-                            before:bg-[url('src/assets/img/sun.webp')]
+                            before:bg-[url('/assets/img/sun.webp')]
                             before:bg-[size:35%]
                             before:bg-no-repeat
                             before:bg-center
@@ -150,7 +150,7 @@ export default function MoreDetailsData() {
                             relative
                             before:absolute
                             before:inset-0
-                            before:bg-[url('src/assets/img/moon.webp')]
+                            before:bg-[url('/assets/img/moon.webp')]
                             before:bg-[size:35%]
                             before:bg-no-repeat
                             before:bg-[90%]

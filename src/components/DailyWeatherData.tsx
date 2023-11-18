@@ -29,7 +29,7 @@ export default function DailyWeatherData() {
                             <p className="text-center">{ Math.round(day.temp.max) }º</p>
                             <img
                                 className="max-w-[2rem] justify-self-end"
-                                src={`src/assets/img/icons/${day.weather[0].icon}.png`}
+                                src={`/assets/img/icons/${day.weather[0].icon}.png`}
                                 alt={day.weather[0].description}
                             />
                         </li>)

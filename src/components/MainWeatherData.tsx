@@ -31,7 +31,7 @@ export default function MainWeatherData() {
                 >
                     <img
                         className="w-20 h-auto"
-                        src={`src/assets/img/icons/${data.current.weather[0].icon}.png`}
+                        src={`/assets/img/icons/${data.current.weather[0].icon}.png`}
                         alt={ data.current.weather[0].description }
                     />
                     <p className="font-bold text-7xl after:content-['º'] after:absolute">{ Math.round(data.current.main.temp) }</p>
