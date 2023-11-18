@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux"
 import AlertsWeather from "./AlertsWeather.tsx";
 import {MutableRefObject, useRef, useState} from "react";
+import {StateWeather, WeatherStateDataObject} from "../data/data.tsx";
 
 export default function MainWeatherData() {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
     const [ opacity, setOpacity ] = useState(1)
     const sectionRef: MutableRefObject<HTMLElement | null> = useRef(null)
 
@@ -39,7 +40,7 @@ export default function MainWeatherData() {
                         <span>Máx: { Math.round(data.daily[0].temp.max) }º</span>
                     </p>
                     <p>{ data.current.weather[0].description.charAt(0).toUpperCase().concat(data.current.weather[0].description.slice(1)) }</p>
-                    { data.alerts && <AlertsWeather data={ data.alerts[0] } />}
+                    { data.alerts && <AlertsWeather alerts={ data.alerts } />}
                 </section>
             )}
         </>

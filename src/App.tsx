@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux"
+// @ts-ignore
 import {updateWeatherData} from "./features/weatherDataSlice.jsx";
+// @ts-ignore
 import {updateSystemIsMobileState} from "./features/systemSlice.jsx"
 import {getAirPollution, getCurrentWeatherData, getOneCallWeatherData} from "./mixins/weatherFetch.tsx";
 
@@ -15,13 +17,13 @@ import Loading from "./components/Loading.tsx";
 import AirPollution from "./components/AirPollution.tsx";
 import FooterComponent from "./components/FooterComponent.tsx";
 import MapLocation from "./components/MapLocation.tsx";
-import {DefaultGeolocation} from "./data/data.tsx";
+import {DefaultGeolocation, GeolocationObject, StateWeather, StateSystem} from "./data/data.tsx";
 import UvIndex from "./components/UvIndex.tsx";
 
 export default function App() {
 
-    const data = useSelector((state) => state.weatherData.value)
-    const system = useSelector((state) => state.system.value)
+    const data = useSelector((state: StateWeather) => state.weatherData.value)
+    const system = useSelector((state: StateSystem) => state.system.value)
     const dispatch = useDispatch()
     const [ isLoading, setIsLoading ] = useState(true)
 
@@ -62,7 +64,7 @@ export default function App() {
         }
     }
 
-    function saveCurrentPosition(position: object) {
+    function saveCurrentPosition(position: GeolocationObject) {
         getBulkWeatherData(position.coords.latitude, position.coords.longitude)
     }
 
@@ -90,7 +92,7 @@ export default function App() {
             dispatch(updateSystemIsMobileState( window.innerWidth < 901 ))
         })
 
-    }, [system.value]);
+    }, [system]);
 
   return (
       <>

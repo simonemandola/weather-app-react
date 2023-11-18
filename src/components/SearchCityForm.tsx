@@ -2,21 +2,32 @@ import {InputText} from "primereact/inputtext";
 import {useEffect, useRef, useState} from "react";
 import geocodingCityName from "../mixins/weatherFetch.tsx";
 import {useSelector} from "react-redux";
+import {SearchCityFormProps, StateSystem} from "../data/data.tsx";
 
-export default function SearchCityForm({ getBulkWeatherData }) {
+interface Suggestion {
+    geometry: {
+        coordinates: number[],
+    },
+    place_name: string,
+}
 
-    const isMobile = useSelector((state) => state.system.value.isMobile)
+
+
+export default function SearchCityForm({ getBulkWeatherData }: SearchCityFormProps) {
+
+    const isMobile = useSelector((state: StateSystem) => state.system.value.isMobile)
 
     const [city, setCity] = useState("")
     const [headerWidthStyle, setHeaderWidthStyle] = useState("")
-    const [suggestions, setSuggestions] = useState([] as string[])
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([])
     const minChar = 2
     const searchCityForm = useRef(null)
 
     useEffect(() => {
         setSuggestions([]) // reset suggestion list
         if (city.length > minChar)
-            geocodingCityName(city).then((data)=> { setSuggestions(data as string[]) })
+            //@ts-expect-error
+            geocodingCityName(city).then((data)=> { setSuggestions(data) })
     }, [city]);
 
     function resetForm() {
@@ -36,6 +47,7 @@ export default function SearchCityForm({ getBulkWeatherData }) {
     }
 
     window.onclick = function(event: MouseEvent): void {
+        // @ts-ignore
         if (event.target !== searchCityForm.current && !searchCityForm.current.contains(event.target as Node)) {
             resetForm()
             setHeaderWidthStyle("")
@@ -61,17 +73,20 @@ export default function SearchCityForm({ getBulkWeatherData }) {
                 <ul
                     className="[&>li:nth-child(odd)]:bg-gray-100 absolute top-full shadow z-50 w-full sm:w-80 left-0 sm:-left-20 bg-blue-100 p-4 rounded-xl box-border transition-all duration-500"
                 >
-                    { suggestions.map((suggestion, index: number) =>
-                        <li key={index} className="rounded">
-                            <button
-                                className="text-left p-2 box-border hover:bg-gray-200 w-full hover:underline"
-                                type="button"
-                                onClick={()=>
-                                    submitForm(suggestion.geometry.coordinates[1], suggestion.geometry.coordinates[0])}
-                            >
-                                { suggestion.place_name }
-                            </button>
-                        </li>)}
+                    { suggestions.map((suggestion, index: number) => {
+                        return (
+                            <li key={index} className="rounded">
+                                <button
+                                    className="text-left p-2 box-border hover:bg-gray-200 w-full hover:underline"
+                                    type="button"
+                                    onClick={()=>
+                                        submitForm(suggestion.geometry.coordinates[1], suggestion.geometry.coordinates[0])}
+                                >
+                                    { suggestion.place_name }
+                                </button>
+                            </li>
+                        )
+                    })}
                 </ul>}
         </article>
     )

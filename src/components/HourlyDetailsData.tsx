@@ -1,9 +1,10 @@
 import {useSelector} from "react-redux";
 import {formatTimeHour} from "../mixins/mixins.tsx";
+import {StateWeather, WeatherStateDataObject} from "../data/data.tsx";
 
 export default function HourlyDetailsData() {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
 
     const columns = [
         "Hora",
@@ -26,7 +27,7 @@ export default function HourlyDetailsData() {
                 </p>
                 <ul className="[&>li:nth-child(odd)]:bg-gray-100 overflow-scroll h-[18rem]">
                     {data.hourly.slice(0, 25).map(
-                        (weather: object, index: number) =>
+                        (weather, index: number) =>
                             <li key={index} className="text-sm sm:text-base w-full grid grid-cols-7 gap-x-2 items-center justify-between p-3 sm:p-4 box-border rounded-xl">
                                 <p>{ index == 0 ? 'Ahora' : formatTimeHour(weather.dt, data.timezone_offset) }</p>
                                 <p className="text-center">{ Math.round(weather.temp) }º</p>

@@ -1,10 +1,11 @@
 import {useSelector} from "react-redux";
 import scrollToTheTop from "../mixins/mixins.tsx"
 import SearchCityForm from "./SearchCityForm.tsx";
+import {SearchCityFormProps, StateWeather, WeatherStateDataObject} from "../data/data.tsx";
 
-export default function TopBar({ getBulkWeatherData }) {
+export default function TopBar({ getBulkWeatherData }: SearchCityFormProps) {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
 
     return (
         <>

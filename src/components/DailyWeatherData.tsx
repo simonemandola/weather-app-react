@@ -1,10 +1,11 @@
-import {useSelector} from "react-redux";
+import {useSelector} from "react-redux"
+import {StateWeather, WeatherStateDataObject} from "../data/data.tsx"
 
 export default function DailyWeatherData() {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
 
-    const columns = [
+    const columns: string[] = [
         "Día",
         "Temp. min.",
         "Temp. máx.",
@@ -21,7 +22,7 @@ export default function DailyWeatherData() {
                     }) }
                 </p>
                 <ul className="[&>li:nth-child(odd)]:bg-gray-100 overflow-scroll h-auto sm:h-[18rem]">
-                    { data.daily.map((day: object, index: number) => {
+                    { data.daily.map((day, index: number) => {
                         return (<li key={index} className="w-full grid grid-cols-4 gap-x-2 items-center justify-between p-4 box-border rounded-xl">
                             <p className="capitalize">{ index == 0 ? 'Hoy' : day.dt }</p>
                             <p className="text-center">{ Math.round(day.temp.min) }º</p>

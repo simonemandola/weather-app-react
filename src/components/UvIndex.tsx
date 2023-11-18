@@ -1,12 +1,12 @@
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {UvIndexName} from "../data/data.tsx";
+import {StateWeather, UvIndexName, WeatherStateDataObject} from "../data/data.tsx";
 
 export default function UvIndex() {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
     const [ pointPosition, setPointPosition ] = useState("5%")
-    const [ uvIndexText, setUvIndexText ] = useState(UvIndexName.AP1)
+    const [ uvIndexText, setUvIndexText ] = useState(UvIndexName.UVIndex1)
 
     useEffect(() => {
 
@@ -45,7 +45,7 @@ export default function UvIndex() {
                         <div
                             className="point relative w-2 h-2 z-10 bg-white rounded-full"
                             style={{ left: pointPosition }}
-                            title={ data.daily[0].uvi }
+                            title={ data.daily[0].uvi.toString() }
                         />
                     </div>
                     <p className="text-sm mt-4">{ uvIndexText }</p>

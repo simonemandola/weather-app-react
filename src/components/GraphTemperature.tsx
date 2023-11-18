@@ -2,12 +2,13 @@ import {useEffect, useState} from "react";
 import {Chart} from 'primereact/chart';
 import {useSelector} from "react-redux";
 import {formatTimeHour} from "../mixins/mixins.tsx";
+import {StateSystem, StateWeather, WeatherStateDataObject} from "../data/data.tsx";
 
 export default function GraphTemperature() {
 
-    const isMobile = useSelector((state) => state.system.value.isMobile)
-    const data = useSelector((state) => state.weatherData.value)
-    const [ temperatures, setTemperatures ] = useState([] as string[])
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
+    const isMobile: boolean = useSelector((state: StateSystem) => state.system.value.isMobile)
+    const [ temperatures, setTemperatures ] = useState([] as number[])
     const [ hourLabels, setHourLabels ] = useState([] as string[])
 
     const textColor = "#043d75"
@@ -73,10 +74,10 @@ export default function GraphTemperature() {
             setTemperatures([])
 
             // Update chart data
-            data.hourly.map((hour: number, index: number): void => {
+            data.hourly.map((hour, index: number): void => {
                 if (index < 13) {
                     setHourLabels((value: string[])=> [...value, formatTimeHour(hour.dt, data.timezone_offset) as string])
-                    setTemperatures((value)=> [...value, hour.temp])
+                    setTemperatures((value: number[])=> [...value, hour.temp])
                 }
             })
         }

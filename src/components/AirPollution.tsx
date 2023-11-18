@@ -1,10 +1,10 @@
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {AirPollutionName} from "../data/data.tsx";
+import {AirPollutionName, WeatherStateDataObject, StateWeather} from "../data/data.tsx";
 
 export default function AirPollution() {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
     const [ pointPosition, setPointPosition ] = useState("5%")
     const [ airPollutionText, setAirPollutionText ] = useState(AirPollutionName.AP1)
 

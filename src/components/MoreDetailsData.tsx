@@ -1,9 +1,10 @@
 import {useSelector} from "react-redux";
 import {formatTimeHour} from "../mixins/mixins.tsx";
+import {StateWeather, WeatherStateDataObject} from "../data/data.tsx";
 
 export default function MoreDetailsData() {
 
-    const data = useSelector((state) => state.weatherData.value)
+    const data: WeatherStateDataObject = useSelector((state: StateWeather) => state.weatherData.value)
     const isDay: boolean = data.current.dt > data.daily[0].sunrise && data.current.dt < data.daily[0].sunset
 
     function getWindDirection(degree: number): string {
