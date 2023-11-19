@@ -13,7 +13,7 @@ export default {
         'air-pollution': "linear-gradient(90deg, #2ec92e, #c7bf26, #c76e26, #e2122a, #a7075c 95%)",
       },
       gridTemplateColumns: {
-        header: "1fr auto"
+        header: "1fr auto auto"
       }
     },
   },
