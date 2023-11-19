@@ -16,6 +16,7 @@ export default function TopBar({ getBulkWeatherData }: SearchCityFormProps) {
             setIsLoading(false)
         }, ()=> {
             getBulkWeatherData(DefaultGeolocation.lat, DefaultGeolocation.lon, true)
+            setIsLoading(false)
         })
     }
 
