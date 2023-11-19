@@ -41,8 +41,7 @@ export default function SearchCityForm({ getBulkWeatherData }: SearchCityFormPro
         resetForm()
     }
 
-    function showInputSearch(e: MouseEvent): void {
-        e.stopPropagation()
+    function showInputSearch(): void {
         if (isMobile)
             setHeaderWidthStyle("w-48")
     }
@@ -59,7 +58,7 @@ export default function SearchCityForm({ getBulkWeatherData }: SearchCityFormPro
         <article
             ref={searchCityForm}
             className={`${headerWidthStyle} sm:relative w-10 sm:w-auto transition-all duration-500`}
-            onClick={()=> showInputSearch}
+            onClick={showInputSearch}
         >
             <form className="w-full sm:w-60 relative h-full flex items-center" onSubmit={(e)=> e.preventDefault()}>
                 <i className="pi pi-search absolute left-3 pointer-events-none"></i>
