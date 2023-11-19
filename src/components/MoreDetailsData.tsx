@@ -132,7 +132,7 @@ export default function MoreDetailsData() {
                         </li>
                         <li className="rounded-xl bg-blue-100 p-4 h-full grid grid-flow-row content-between gap-y-4 min-h-[10rem]">
                             <p>Abundancia de nubes</p>
-                            <p className="text-3xl">{ data.daily[0].clouds }º</p>
+                            <p className="text-3xl">{ data.daily[0].clouds }%</p>
                         </li>
                         <li
                             className="
