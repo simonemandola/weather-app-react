@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import scrollToTheTop from "../mixins/mixins.tsx"
 import SearchCityForm from "./SearchCityForm.tsx";
-import {SearchCityFormProps, StateWeather, WeatherStateDataObject} from "../data/data.tsx";
+import {DefaultGeolocation, SearchCityFormProps, StateWeather, WeatherStateDataObject} from "../data/data.tsx";
 import {useState} from "react";
 
 export default function TopBar({ getBulkWeatherData }: SearchCityFormProps) {
@@ -14,6 +14,8 @@ export default function TopBar({ getBulkWeatherData }: SearchCityFormProps) {
         navigator.geolocation.getCurrentPosition((position) => {
             getBulkWeatherData(position.coords.latitude, position.coords.longitude, true)
             setIsLoading(false)
+        }, ()=> {
+            getBulkWeatherData(DefaultGeolocation.lat, DefaultGeolocation.lon, true)
         })
     }
 
