@@ -29,7 +29,7 @@ export default function TopBar({ getBulkWeatherData }: SearchCityFormProps) {
                             { data.current.name } { Math.round(data.current.main.temp) }º - { data.current.sys.country }
                         </p>
                     </h1>
-                    <button type="button" className="w-12 h-5/6 my-auto flex items-center justify-center rounded-xl shadow bg-gray-200 hover:bg-gray-300 hover:shadow-md transition-all duration-500" onClick={ getMyGeolocation }>
+                    <button type="button" className="w-10 h-5/6 my-auto flex items-center justify-center rounded-xl shadow bg-gray-200 hover:bg-gray-300 hover:shadow-md transition-all duration-500" onClick={ getMyGeolocation }>
                         { isLoading
                             ? <i className="pi pi-spinner animate-spin" />
                             : <i className="pi pi-map-marker text-xl" />

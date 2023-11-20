@@ -130,12 +130,6 @@ export default function App() {
                       <p className="text-xs text-center sm:col-span-2 text-gray-400">
                           Datos meteorológicos: <a href="https://openweathermap.org/" target="_blank" className="underline">https://openweathermap.org/</a>
                       </p>
-                      <p className="text-xs text-center sm:col-span-2 text-gray-400">
-                          <a href="https://github.com/simonemandola/weather-app-react/issues" target="_blank" className="underline">
-                              <i className="pi pi-info-circle text-xs mr-2"></i>
-                              Informar de un problema
-                          </a>
-                      </p>
                   </>)
               }
           </main>
