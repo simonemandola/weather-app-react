@@ -1,4 +1,3 @@
-import {InputText} from "primereact/inputtext";
 import {useEffect, useRef, useState} from "react";
 import geocodingCityName from "../mixins/weatherFetch.tsx";
 import {useSelector} from "react-redux";
@@ -62,7 +61,8 @@ export default function SearchCityForm({ getBulkWeatherData }: SearchCityFormPro
         >
             <form className="w-full sm:w-60 relative h-full flex items-center" onSubmit={(e)=> e.preventDefault()}>
                 <i className="pi pi-search absolute left-3 pointer-events-none"></i>
-                <InputText
+                <input
+                    type="text"
                     className="rounded-xl w-full h-5/6 hover:outline hover:outline-gray-300 transition-all pl-10"
                     placeholder="Buscar ciudad..."
                     value={city}
