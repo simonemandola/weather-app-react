@@ -20,7 +20,11 @@ export default function HourlyWeatherData() {
                                         <p>{ index === 0 ? 'Ahora' : formatTimeHour(weather.dt, data.timezone_offset) }</p>
                                         <img
                                             className="w-8"
-                                            src={`/assets/img/icons/${weather.weather[0].icon}.png`}
+                                            src={`/assets/img/icons/${
+                                                index == 0
+                                                ? data.current.weather[0].icon
+                                                : weather.weather[0].icon}.png`
+                                        }
                                             alt={ weather.weather[0].description }
                                         />
                                         <p className="text-blue-700 text-xs">
