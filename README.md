@@ -1,5 +1,7 @@
 # React + TypeScript + Vite + PrimeReact + Tailwind CSS
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/79eeb815-f3d6-4ff1-930c-6f024ce7de17/deploy-status)](https://app.netlify.com/sites/s-mandola-weather-app/deploys)
+
 > [👉 Watch live](https://s-mandola-weather-app.netlify.app/)
 
  
