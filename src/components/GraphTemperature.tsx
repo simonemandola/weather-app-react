@@ -15,7 +15,7 @@ export default function GraphTemperature() {
     const textColorSecondary = textColor
     const surfaceBorder = `${textColor}08`
 
-    const dataChar = {
+    const dataChart = {
         labels: hourLabels,
         datasets: [
             {
@@ -67,7 +67,8 @@ export default function GraphTemperature() {
     }
 
     useEffect(() => {
-        if (data.hourly) {
+
+        if (data.hourly.length > 0) {
 
             // Reset data
             setHourLabels([])
@@ -80,14 +81,19 @@ export default function GraphTemperature() {
                     setTemperatures((value: number[])=> [...value, hour.temp])
                 }
             })
+
+            dataChart.labels = hourLabels
+            dataChart.datasets[0].data = temperatures
+
         }
-    }, []);
+
+    }, [])
 
     return (
         <>
             { data.hourly &&
                 <section className="bg-blue-100 h-fit p-4 rounded-xl">
-                    <Chart type="line" data={dataChar} options={options} />
+                    <Chart type="line" data={dataChart} options={options} />
                 </section>
             }
         </>
